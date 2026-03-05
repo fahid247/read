@@ -1,0 +1,50 @@
+@import "tailwindcss";
+ @plugin "daisyui" {
+   themes: light --default;
+ }
+@plugin "daisyui/theme" {
+  name: "custom-light";
+  default: true;
+
+  /* Base Colors */
+  --color-base-100: #F8F8FD;     /* Main background */
+  --color-base-200: #ffffff;     /* Cards / surfaces */
+  --color-base-300: #CCCCF5;     /* Borders / subtle bg */
+  --color-base-content: #202430; /* Main text */
+
+  /* Primary */
+  --color-primary: #4640DE;
+  --color-primary-content: #ffffff;
+
+  /* Secondary */
+  --color-secondary: #25324B;
+  --color-secondary-content: #515B6F;
+;
+
+  /* Accent */
+  --color-accent: #26A4FF;
+  --color-accent-content: #ffffff;
+
+  /* Neutral */
+  --color-neutral: #202430;
+  --color-neutral-content:#25324B;
+;
+
+  /* Status Colors */
+  --color-info: #26A4FF;
+  --color-success: #56CDAD;
+  --color-warning: #FFB836;
+  --color-error: #ef4444;
+
+  /* Optional UI Tweaks */
+  --rounded-box: 12px;
+  --rounded-btn: 8px;
+  --rounded-badge: 6px;
+
+  --animation-btn: 0.25s;
+  --animation-input: 0.2s;
+
+  --border-btn: 1px;
+}
+
+@custom-variant dark (&:where([data-theme=night], [data-theme=night] *));  
