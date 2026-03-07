@@ -1,50 +1,110 @@
 @import "tailwindcss";
- @plugin "daisyui" {
-   themes: light --default;
- }
-@plugin "daisyui/theme" {
-  name: "custom-light";
-  default: true;
+@import "animate.css";
 
-  /* Base Colors */
-  --color-base-100: #F8F8FD;     /* Main background */
-  --color-base-200: #ffffff;     /* Cards / surfaces */
-  --color-base-300: #CCCCF5;     /* Borders / subtle bg */
-  --color-base-content: #202430; /* Main text */
-
-  /* Primary */
-  --color-primary: #4640DE;
-  --color-primary-content: #ffffff;
-
-  /* Secondary */
-  --color-secondary: #25324B;
-  --color-secondary-content: #515B6F;
-;
-
-  /* Accent */
-  --color-accent: #26A4FF;
-  --color-accent-content: #ffffff;
-
-  /* Neutral */
-  --color-neutral: #202430;
-  --color-neutral-content:#25324B;
-;
-
-  /* Status Colors */
-  --color-info: #26A4FF;
-  --color-success: #56CDAD;
-  --color-warning: #FFB836;
-  --color-error: #ef4444;
-
-  /* Optional UI Tweaks */
-  --rounded-box: 12px;
-  --rounded-btn: 8px;
-  --rounded-badge: 6px;
-
-  --animation-btn: 0.25s;
-  --animation-input: 0.2s;
-
-  --border-btn: 1px;
+/* DaisyUI */
+@plugin "daisyui" {
+   themes: ["readmart", "readmart-dark"];
 }
 
-@custom-variant dark (&:where([data-theme=night], [data-theme=night] *));  
+/* =========================
+   READ MART LIGHT THEME
+   ========================= */
+
+@plugin "daisyui/theme" {
+  name: "readmart";
+  default: true;
+
+  /* Paper background */
+  --color-base-100: #FAFAFA;
+  --color-base-200: #F5F5F5;
+  --color-base-300: #E5E5E5;
+  --color-base-content: #1F2937;
+
+  /* Brand Green */
+  --color-primary: #4CAF50;
+  --color-primary-content: #ffffff;
+
+  /* Soft green surface */
+  --color-secondary: #E8F5E9;
+  --color-secondary-content: #1B5E20;
+
+  /* Brand Orange (logo awning) */
+  --color-accent: #F59E0B;
+  --color-accent-content: #ffffff;
+
+  --color-info: #3B82F6;
+  --color-info-content: #EFF6FF;
+
+  --color-success: #22C55E;
+  --color-success-content: #ECFDF5;
+
+  --color-warning: #F59E0B;
+  --color-warning-content: #FFFBEB;
+
+  --color-error: #EF4444;
+  --color-error-content: #FEE2E2;
+}
+
+/* =========================
+   READ MART DARK THEME
+   ========================= */
+
+@plugin "daisyui/theme" {
+  name: "readmart-dark";
+
+  --color-base-100: #0F172A;
+  --color-base-200: #020617;
+  --color-base-300: #000000;
+  --color-base-content: #E5E7EB;
+
+  --color-primary: #4ADE80;
+  --color-primary-content: #022C22;
+
+  --color-secondary: #1E293B;
+  --color-secondary-content: #CBD5F5;
+
+  --color-accent: #FBBF24;
+  --color-accent-content: #422006;
+
+  --color-info: #60A5FA;
+  --color-info-content: #020617;
+
+  --color-success: #22C55E;
+  --color-success-content: #052E16;
+
+  --color-warning: #F59E0B;
+  --color-warning-content: #451A03;
+
+  --color-error: #F87171;
+  --color-error-content: #450A0A;
+}
+
+/* =========================
+   Navigation Active State
+   ========================= */
+
+a.active {
+  color: var(--color-primary);
+  font-weight: 600;
+  border-bottom: 2px solid var(--color-primary);
+}
+
+/* =========================
+   Brand Fonts
+   ========================= */
+
+.playfair {
+  font-family: var(--font-playfair);
+}
+
+.inter {
+  font-family: var(--font-inter);
+}
+
+/* =========================
+   Smooth UI
+   ========================= */
+
+* {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
