@@ -62,7 +62,7 @@ const LatestBooks = () => {
           </div>
 
           <button
-            onClick={() => router.push("/allbooks")}
+            onClick={() => router.push("/books")}
             className=" mt-2 px-6 py-3 bg-primary text-white font-semibold rounded-xl transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl flex items-center justify-center gap-2 group/btn"
           >
             <span className="relative z-10">View All Books</span>
