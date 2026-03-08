@@ -136,7 +136,7 @@ const WhyChoose = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <Link
-              href="/allbooks"
+              href="/books"
               className="btn btn-primary px-8 py-3 playfair rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
             >
               Explore Books
