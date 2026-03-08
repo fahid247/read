@@ -1,52 +1,51 @@
-import axios from 'axios';
-import React, { useEffect } from 'react';
+"use client";
 
-import { useNavigate } from 'react-router';
-import UseAuth from './UseAuth';
+import axios from "axios";
+import { useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import UseAuth from "./UseAuth";
 
-
-const axiosSecure = axios.create({
-    baseURL: 'https://back-end-xi-lake.vercel.app/'
-})
+// Create a stable axios instance outside the hook
+const axiosSecureInstance = axios.create({
+  baseURL: "https://back-end-xi-lake.vercel.app/",
+});
 
 const UseAxiosSecure = () => {
-    const { user, logOut } = UseAuth();
-    const navigate = useNavigate();
+  const { user, logOut } = UseAuth(); // ✅ hook at top level
+  const router = useRouter(); // ✅ hook at top level
 
-    useEffect(() => {
-        // intercept request
-        const reqInterceptor = axiosSecure.interceptors.request.use(config => {
-            config.headers.Authorization = `Bearer ${user?.accessToken}`
-            return config
-        })
+  // Memoize axios instance to prevent recreating every render
+  const axiosInstance = useMemo(() => axiosSecureInstance, []);
 
-        // interceptor response
-        const resInterceptor = axiosSecure.interceptors.response.use((response) => {
-            return response;
-        }, (error) => {
-            console.log(error);
+  useEffect(() => {
+    // Request interceptor
+    const reqInterceptor = axiosInstance.interceptors.request.use((config) => {
+      if (user?.accessToken) {
+        config.headers.Authorization = `Bearer ${user.accessToken}`;
+      }
+      return config;
+    });
 
-            const statusCode = error.response?.status;
-
-            if (statusCode === 401 || statusCode === 403) {
-                logOut()
-                    .then(() => {
-                        navigate('/login')
-                    })
-            }
-
-
-            return Promise.reject(error);
-        })
-
-        return () => {
-            axiosSecure.interceptors.request.eject(reqInterceptor);
-            axiosSecure.interceptors.response.eject(resInterceptor);
+    // Response interceptor
+    const resInterceptor = axiosInstance.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        const statusCode = error.response?.status;
+        if (statusCode === 401 || statusCode === 403) {
+          logOut().then(() => router.push("/login"));
         }
+        return Promise.reject(error);
+      }
+    );
 
-    }, [user, logOut, navigate])
+    // Cleanup
+    return () => {
+      axiosInstance.interceptors.request.eject(reqInterceptor);
+      axiosInstance.interceptors.response.eject(resInterceptor);
+    };
+  }, [user, logOut, router, axiosInstance]);
 
-    return axiosSecure;
+  return axiosInstance;
 };
 
 export default UseAxiosSecure;

@@ -21,23 +21,25 @@ const Banner = () => {
 
   const slides = [
     {
-      image: image1,
-      title: "Your Library, Delivered to Your Doorstep",
+      image: image3,
+      title: "Empowering Libraries with Modern Delivery Tools",
       subtitle:
-        "Order, track, and return books from your favorite libraries — all from one platform.",
+        "Manage books, track orders, and serve readers efficiently through BookCourier.",
     },
-    {
+     {
       image: image2,
       title: "Designed for Students, Researchers & Readers",
       subtitle:
         "Access academic and general books from trusted libraries without travel or waiting lines.",
     },
     {
-      image: image3,
-      title: "Empowering Libraries with Modern Delivery Tools",
+      image: image1,
+      title: "Your Library, Delivered to Your Doorstep",
       subtitle:
-        "Manage books, track orders, and serve readers efficiently through BookCourier.",
+        "Order, track, and return books from your favorite libraries — all from one platform.",
     },
+   
+    
   ];
 
   return (
