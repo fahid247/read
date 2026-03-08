@@ -75,7 +75,7 @@ const Banner = () => {
                       {slide.subtitle}
                     </p>
                     <button
-                      onClick={() => router.push("/allbooks")}
+                      onClick={() => router.push("/books")}
                       className="mt-6 bg-primary playfair hover:bg-accent text-base-100 font-semibold px-6 py-3 rounded-full transition-all duration-300"
                     >
                       All Books
