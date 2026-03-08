@@ -6,7 +6,7 @@ import UseAuth from './UseAuth';
 
 
 const axiosSecure = axios.create({
-    baseURL: 'https://read-on-route-server.vercel.app'
+    baseURL: 'https://back-end-xi-lake.vercel.app/'
 })
 
 const UseAxiosSecure = () => {
