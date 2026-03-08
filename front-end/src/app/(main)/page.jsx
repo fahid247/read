@@ -1,11 +1,12 @@
 import Banner from "@/components/Banner/Banner";
 import Coverage from "@/components/Coverage/Coverage";
 import LatestBooks from "@/components/LatestBook/LatestBook";
-import Newsletter from "../components/NewsLetter/NewsLetter";
-import QualityTrust from "@/components/QualityTrust/QualityTrust"
+import Newsletter from "@/components/NewsLetter/NewsLetter";
+import QualityTrust from "@/components/QualityTrust/QualityTrust";
 import Services from "@/components/Services/Services";
 import TrustedBy from "@/components/TrustedBy/TrustedBy";
 import WhyChoose from "@/components/WhyChoose/WhyChoose";
+
 
 export default function Home() {
   return (

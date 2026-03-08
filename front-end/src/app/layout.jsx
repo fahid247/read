@@ -27,7 +27,6 @@ export default function RootLayout({ children }) {
       <body className={`${playfair.variable} ${inter.variable}`}>
         <QueryWrapper>
           <AuthProvider>
-            <NavBar></NavBar>
             {children}
           </AuthProvider>
         </QueryWrapper>

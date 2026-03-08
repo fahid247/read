@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import loginImg from "../../../public/ChatGPT Image Mar 8, 2026, 02_12_44 PM.png";
+import loginImg from "../../../../public/ChatGPT Image Mar 8, 2026, 02_12_44 PM.png";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import useAxiosSecure from "../../Hooks/UseAxiosSecure";
-import useAuth from "../../Hooks/UseAuth";
+import useAuth from "@/hooks/UseAuth";
+import useAxiosSecure from "@/hooks/UseAxiosSecure";
 import Swal from "sweetalert2";
-import Loading from "../Loading";
+import Loading from "../../Loading";
 import { Mail, Lock, ArrowRight, Github, Chrome } from "lucide-react";
 import ReadMartLogo from "@/components/Logo/ReadMartLogo";
 
@@ -23,9 +23,9 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const demoAccounts = [
-    { label: "Demo User", email: "luffy@pirateking.com", password: "123456" },
-    { label: "Librarian", email: "moila@jhoila.com", password: "123456" },
-    { label: "Admin", email: "komla@g.com", password: "123456" },
+    { label: "Demo User", email: "user@gmail.com", password: "123456" },
+    { label: "Librarian", email: "librarian@gmail.com", password: "123456" },
+    { label: "Admin", email: "admin@gmail.com", password: "123456" },
   ];
 
   const handleGoogleSignIn = () => {
