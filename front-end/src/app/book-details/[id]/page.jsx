@@ -3,7 +3,16 @@
 import { useParams, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import { FaHeart, FaBookOpen, FaStar, FaLanguage, FaCalendarAlt, FaUser, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
+import {
+  FaHeart,
+  FaBookOpen,
+  FaStar,
+  FaLanguage,
+  FaCalendarAlt,
+  FaUser,
+  FaPhone,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
@@ -131,15 +140,26 @@ const BookDetailsPage = () => {
 
       <div className="max-w-7xl mx-auto">
         {/* Breadcrumb */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="mb-8 text-sm breadcrumbs"
         >
           <ul className="text-base-content/80 dark:text-base-content/70">
-            <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
-            <li><Link href="/books" className="hover:text-primary transition-colors">Books</Link></li>
+            <li>
+              <Link href="/" className="hover:text-primary transition-colors">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/books"
+                className="hover:text-primary transition-colors"
+              >
+                Books
+              </Link>
+            </li>
             <li className="text-primary font-semibold">{book.name}</li>
           </ul>
         </motion.div>
@@ -166,18 +186,22 @@ const BookDetailsPage = () => {
                     height={650}
                     alt={book.name}
                     className="rounded-xl shadow-xl max-h-137.5 object-cover"
-                    priority
+                    priority={true}
+                    loading="eager"
+                    // Add a placeholder blur effect
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRg..."
                   />
                 </motion.div>
-                
+
                 {/* Book status badge */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.5 }}
                   className={`absolute top-12 right-12 px-4 py-2 rounded-full text-sm font-semibold shadow-lg ${
-                    book.status === "Published" 
-                      ? "bg-green-500 text-white" 
+                    book.status === "Published"
+                      ? "bg-green-500 text-white"
                       : "bg-red-500 text-white"
                   }`}
                 >
@@ -196,13 +220,13 @@ const BookDetailsPage = () => {
           >
             {/* Title and Author */}
             <div className="space-y-3">
-              <motion.h1 
+              <motion.h1
                 variants={fadeInUp}
                 className="text-5xl font-bold bg-linear-to-r from-base-content to-base-content/70 bg-clip-text text-transparent"
               >
                 {book.name}
               </motion.h1>
-              <motion.p 
+              <motion.p
                 variants={fadeInUp}
                 className="text-2xl text-base-content/80 dark:text-base-content/70"
               >
@@ -211,10 +235,7 @@ const BookDetailsPage = () => {
             </div>
 
             {/* Rating */}
-            <motion.div 
-              variants={fadeInUp}
-              className="flex items-center gap-4"
-            >
+            <motion.div variants={fadeInUp} className="flex items-center gap-4">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
                   <FaStar
@@ -233,7 +254,7 @@ const BookDetailsPage = () => {
             </motion.div>
 
             {/* Description */}
-            <motion.p 
+            <motion.p
               variants={fadeInUp}
               className="text-base-content/80 dark:text-base-content/60 leading-relaxed text-lg"
             >
@@ -241,7 +262,7 @@ const BookDetailsPage = () => {
             </motion.p>
 
             {/* Book Details Grid */}
-            <motion.div 
+            <motion.div
               variants={staggerContainer}
               initial="hidden"
               animate="visible"
@@ -262,8 +283,12 @@ const BookDetailsPage = () => {
                   <div className="flex items-center gap-3">
                     <item.icon className="text-2xl text-primary" />
                     <div>
-                      <p className="text-sm text-base-content/80 ">{item.label}</p>
-                      <p className="font-semibold text-base-content ">{item.value}</p>
+                      <p className="text-sm text-base-content/80 ">
+                        {item.label}
+                      </p>
+                      <p className="font-semibold text-base-content ">
+                        {item.value}
+                      </p>
                     </div>
                   </div>
                 </motion.div>
@@ -271,7 +296,7 @@ const BookDetailsPage = () => {
             </motion.div>
 
             {/* Price and Actions */}
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
               className="flex items-center justify-between bg-linear-to-r from-primary/10 to-base-content/10 p-6 rounded-2xl"
             >
@@ -279,22 +304,26 @@ const BookDetailsPage = () => {
                 <p className="text-sm text-base-content/90  mb-1">Price</p>
                 <p className="text-4xl font-bold text-primary">৳{book.price}</p>
               </div>
-              
+
               <div className="flex gap-4">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="btn bg-linear-to-r from-primary to-primary/80 text-white border-none px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all"
-                  onClick={() => document.getElementById("order_modal").showModal()}
+                  onClick={() =>
+                    document.getElementById("order_modal").showModal()
+                  }
                 >
                   Order Now
                 </motion.button>
-                
+
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="btn bg-white dark:bg-gray-800 text-pink-500 border-2 border-pink-500 hover:bg-pink-500 hover:text-white px-6 py-3 rounded-xl transition-all"
-                  onClick={() => document.getElementById("wish_modal").showModal()}
+                  onClick={() =>
+                    document.getElementById("wish_modal").showModal()
+                  }
                 >
                   <FaHeart className="mr-2" /> Wishlist
                 </motion.button>
@@ -302,7 +331,7 @@ const BookDetailsPage = () => {
             </motion.div>
 
             {/* Additional Info */}
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
               className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400"
             >
@@ -325,74 +354,82 @@ const BookDetailsPage = () => {
 
       {/* Order Modal - Modern Design */}
       <dialog id="order_modal" className="modal modal-bottom sm:modal-middle">
-        <div className="modal-box bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-2xl max-w-md">
-          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-secondary rounded-t-2xl"></div>
-          
+        <div className="modal-box bg-linear-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-2xl max-w-md">
+          <div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-primary to-secondary rounded-t-2xl"></div>
+
           <div className="p-6">
-            <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <h3 className="text-2xl font-bold mb-2 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
               Complete Your Order
             </h3>
             <p className="text-gray-500 dark:text-gray-400 mb-6">
               Please provide your delivery details
             </p>
-            
+
             <form onSubmit={handleOrder} className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-600 dark:text-gray-300">Name</label>
+                <label className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                  Name
+                </label>
                 <div className="relative">
                   <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <input 
-                    readOnly 
-                    value={user?.displayName || ""} 
-                    className="input input-bordered w-full pl-10 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 rounded-xl" 
+                  <input
+                    readOnly
+                    value={user?.displayName || ""}
+                    className="input input-bordered w-full pl-10 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 rounded-xl"
                   />
                 </div>
               </div>
-              
+
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-600 dark:text-gray-300">Email</label>
-                <input 
-                  readOnly 
-                  value={user?.email || ""} 
-                  className="input input-bordered w-full bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 rounded-xl" 
+                <label className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                  Email
+                </label>
+                <input
+                  readOnly
+                  value={user?.email || ""}
+                  className="input input-bordered w-full bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 rounded-xl"
                 />
               </div>
-              
+
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-600 dark:text-gray-300">Phone Number</label>
+                <label className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                  Phone Number
+                </label>
                 <div className="relative">
                   <FaPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <input 
-                    name="phone" 
-                    placeholder="+880 1XXXXXXXXX" 
-                    className="input input-bordered w-full pl-10 border-gray-200 dark:border-gray-600 rounded-xl" 
-                    required 
+                  <input
+                    name="phone"
+                    placeholder="+880 1XXXXXXXXX"
+                    className="input input-bordered w-full pl-10 border-gray-200 dark:border-gray-600 rounded-xl"
+                    required
                   />
                 </div>
               </div>
-              
+
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-600 dark:text-gray-300">Delivery Address</label>
+                <label className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                  Delivery Address
+                </label>
                 <div className="relative">
                   <FaMapMarkerAlt className="absolute left-3 top-3 text-gray-400" />
-                  <textarea 
-                    name="address" 
-                    placeholder="House, Road, Area, City" 
-                    className="textarea textarea-bordered w-full pl-10 pt-2 border-gray-200 dark:border-gray-600 rounded-xl min-h-[100px]" 
-                    required 
+                  <textarea
+                    name="address"
+                    placeholder="House, Road, Area, City"
+                    className="textarea textarea-bordered w-full pl-10 pt-2 border-gray-200 dark:border-gray-600 rounded-xl min-h-25"
+                    required
                   />
                 </div>
               </div>
-              
+
               <div className="modal-action flex gap-3 mt-6">
-                <button 
-                  type="submit" 
-                  className="btn bg-gradient-to-r from-primary to-secondary text-white border-none flex-1 rounded-xl hover:shadow-lg transition-all"
+                <button
+                  type="submit"
+                  className="btn bg-linear-to-r from-primary to-secondary text-white border-none flex-1 rounded-xl hover:shadow-lg transition-all"
                 >
                   Confirm Order
                 </button>
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="btn bg-gray-200 dark:bg-gray-700 border-none flex-1 rounded-xl hover:bg-gray-300 dark:hover:bg-gray-600 transition-all"
                   onClick={() => document.getElementById("order_modal").close()}
                 >
@@ -409,9 +446,9 @@ const BookDetailsPage = () => {
 
       {/* Wishlist Modal - Modern Design */}
       <dialog id="wish_modal" className="modal modal-bottom sm:modal-middle">
-        <div className="modal-box bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-2xl max-w-md">
-          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-pink-500 to-rose-500 rounded-t-2xl"></div>
-          
+        <div className="modal-box bg-linear-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-2xl max-w-md">
+          <div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-pink-500 to-rose-500 rounded-t-2xl"></div>
+
           <div className="p-6 text-center">
             <motion.div
               initial={{ scale: 0 }}
@@ -421,22 +458,22 @@ const BookDetailsPage = () => {
             >
               <FaHeart className="text-4xl text-pink-500" />
             </motion.div>
-            
+
             <h3 className="text-2xl font-bold mb-2 text-gray-800 dark:text-white">
               Add to Wishlist
             </h3>
             <p className="text-gray-500 dark:text-gray-400 mb-6">
               Would you like to add &quot;{book.name}&quot; to your wishlist?
             </p>
-            
+
             <div className="modal-action flex gap-3">
-              <button 
-                className="btn bg-gradient-to-r from-pink-500 to-rose-500 text-white border-none flex-1 rounded-xl hover:shadow-lg transition-all py-3"
+              <button
+                className="btn bg-linear-to-r from-pink-500 to-rose-500 text-white border-none flex-1 rounded-xl hover:shadow-lg transition-all py-3"
                 onClick={handleWishList}
               >
                 <FaHeart className="mr-2" /> Add to Wishlist
               </button>
-              <button 
+              <button
                 className="btn bg-gray-200 dark:bg-gray-700 border-none flex-1 rounded-xl hover:bg-gray-300 dark:hover:bg-gray-600 transition-all"
                 onClick={() => document.getElementById("wish_modal").close()}
               >
