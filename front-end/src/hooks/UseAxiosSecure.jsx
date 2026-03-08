@@ -5,43 +5,49 @@ import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import UseAuth from "./UseAuth";
 
-// Create a stable axios instance outside the hook
 const axiosSecureInstance = axios.create({
   baseURL: "https://back-end-xi-lake.vercel.app/",
 });
 
 const UseAxiosSecure = () => {
-  const { user, logOut } = UseAuth(); // ✅ hook at top level
-  const router = useRouter(); // ✅ hook at top level
+  const { user, logOut } = UseAuth();
+  const router = useRouter();
 
-  // Memoize axios instance to prevent recreating every render
   const axiosInstance = useMemo(() => axiosSecureInstance, []);
 
   useEffect(() => {
-    // Request interceptor
-    const reqInterceptor = axiosInstance.interceptors.request.use((config) => {
-      if (user?.accessToken) {
-        config.headers.Authorization = `Bearer ${user.accessToken}`;
-      }
-      return config;
-    });
-
-    // Response interceptor
-    const resInterceptor = axiosInstance.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        const statusCode = error.response?.status;
-        if (statusCode === 401 || statusCode === 403) {
-          logOut().then(() => router.push("/login"));
+    const requestInterceptor = axiosInstance.interceptors.request.use(
+      (config) => {
+        if (user?.accessToken) {
+          config.headers.Authorization = `Bearer ${user.accessToken}`;
         }
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+
+    const responseInterceptor = axiosInstance.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const status = error?.response?.status;
+
+        // 🚀 Only redirect if user already exists
+        if ((status === 401 || status === 403) && user) {
+          try {
+            await logOut();
+            router.replace("/login");
+          } catch (logoutError) {
+            console.error("Logout failed:", logoutError);
+          }
+        }
+
         return Promise.reject(error);
       }
     );
 
-    // Cleanup
     return () => {
-      axiosInstance.interceptors.request.eject(reqInterceptor);
-      axiosInstance.interceptors.response.eject(resInterceptor);
+      axiosInstance.interceptors.request.eject(requestInterceptor);
+      axiosInstance.interceptors.response.eject(responseInterceptor);
     };
   }, [user, logOut, router, axiosInstance]);
 

@@ -76,7 +76,7 @@ const Banner = () => {
                     </p>
                     <button
                       onClick={() => router.push("/books")}
-                      className="mt-6 bg-primary playfair hover:bg-accent text-base-100 font-semibold px-6 py-3 rounded-full transition-all duration-300"
+                      className=" mt-6 px-4 py-2 bg-primary text-white font-semibold rounded-md transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl flex items-center justify-center gap-2 group/btn mx-auto"
                     >
                       All Books
                     </button>

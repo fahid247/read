@@ -22,10 +22,9 @@ import Loading from "../Loading";
 
 
 const DashboardHome = () => {
-  const { user } = useAuth();
-  const { role, isRoleLoading } = useRole();
-  console.log(role)
-  if (isRoleLoading) return <Loading />;
+  const { user ,loading } = useAuth();
+  const { role, roleLoading } = useRole();
+  if (roleLoading || loading) return <Loading />;
 
   return (
     <section className="p-6 max-w-7xl mx-auto">

@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 import { BiBookAdd } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { FaParachuteBox, FaUsers } from "react-icons/fa";
@@ -14,9 +13,8 @@ import { FaBookBookmark } from "react-icons/fa6";
 import { TbJewishStarFilled } from "react-icons/tb";
 import { BsMoonStarsFill, BsSunFill } from "react-icons/bs";
 import { IoHomeOutline } from "react-icons/io5";
-
 import useRole from "@/Hooks/UseRole";
-
+import useAuth from "@/hooks/UseAuth";
 
 const DashboardLayout = ({ children }) => {
   const { role, roleLoading } = useRole();
@@ -25,7 +23,7 @@ const DashboardLayout = ({ children }) => {
   const [theme, setTheme] = useState(
     typeof window !== "undefined"
       ? localStorage.getItem("theme") || "light"
-      : "light"
+      : "light",
   );
 
   useEffect(() => {
@@ -34,7 +32,13 @@ const DashboardLayout = ({ children }) => {
   }, [theme]);
 
   const isActive = (path) => pathname === path;
-
+  const {loading } = useAuth();
+  if (roleLoading || loading) return <div className="text-primary flex flex-col justify-center items-center min-w-screen  min-h-screen">
+    <span className="loading loading-spinner text-primary loading-xl "></span>
+    <h1 className="text-5xl playfair">It take&apos;s only 10 seconds</h1>
+    <h2 className="text-4xl playfair">Please be paitent</h2>
+    
+  </div>;
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -54,7 +58,7 @@ const DashboardLayout = ({ children }) => {
 
             {roleLoading ? (
               <h1 className="text-base-content playfair capitalize text-[clamp(2rem,3.5vw,3.75rem)] font-bold">
-                 Dashboard
+                Dashboard
               </h1>
             ) : (
               <h1 className="text-base-content playfair capitalize text-[clamp(2rem,3.5vw,3.75rem)] font-bold">
@@ -65,7 +69,9 @@ const DashboardLayout = ({ children }) => {
 
           {/* Theme Toggle */}
           <button
-            onClick={() => setTheme(theme === "readmart" ? "readmart-dark" : "readmart")}
+            onClick={() =>
+              setTheme(theme === "readmart" ? "readmart-dark" : "readmart")
+            }
             className="btn btn-ghost btn-circle mr-2"
           >
             {theme === "readmart" ? (
@@ -88,7 +94,6 @@ const DashboardLayout = ({ children }) => {
 
         <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
           <ul className="menu w-full grow">
-
             {/* Home */}
             <li>
               <Link
@@ -98,7 +103,7 @@ const DashboardLayout = ({ children }) => {
                 }`}
                 data-tip="Homepage"
               >
-               <IoHomeOutline></IoHomeOutline>
+                <IoHomeOutline></IoHomeOutline>
                 <span className="is-drawer-close:hidden">Home page</span>
               </Link>
             </li>
@@ -168,9 +173,20 @@ const DashboardLayout = ({ children }) => {
                     <span className="is-drawer-close:hidden">Add Books</span>
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    href="/dashboard/addBooks"
+                    className={`is-drawer-close:tooltip is-drawer-close:tooltip-right ${
+                      isActive("/dashboard/addBooks") ? "active" : ""
+                    }`}
+                    data-tip="Add Books"
+                  >
+                    <ImBooks></ImBooks>
+                    <span className="is-drawer-close:hidden">My Books</span>
+                  </Link>
+                </li>
               </>
             )}
-
           </ul>
         </div>
       </div>

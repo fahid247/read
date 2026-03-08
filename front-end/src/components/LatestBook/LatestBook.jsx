@@ -63,7 +63,7 @@ const LatestBooks = () => {
 
           <button
             onClick={() => router.push("/books")}
-            className=" mt-2 px-6 py-3 bg-primary text-white font-semibold rounded-xl transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl flex items-center justify-center gap-2 group/btn"
+            className=" mt-2 px-6 py-3 bg-primary text-white font-semibold rounded-md transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl flex items-center justify-center gap-2 group/btn"
           >
             <span className="relative z-10">View All Books</span>
             <div className="absolute inset-0 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
@@ -164,7 +164,7 @@ const LatestBooks = () => {
                   {/* Action Button */}
                   <button
                     onClick={() => router.push(`/book-details/${book._id}`)}
-                    className="w-full mt-2 px-6 py-3 bg-primary text-white font-semibold rounded-xl transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl flex items-center justify-center gap-2 group/btn"
+                    className="w-full mt-2 px-6 py-3 bg-primary text-white font-semibold rounded-md transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl flex items-center justify-center gap-2 group/btn"
                   >
                     <span>View Details</span>
                     <svg className="w-5 h-5 transform group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
