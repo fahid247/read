@@ -18,7 +18,7 @@ const LatestBooks = () => {
   } = useQuery({
     queryKey: ["latestBooks"],
     queryFn: async () => {
-      const res = await axios.get("/public/books?limit=8");
+      const res = await axios.get("/books?limit=8");
       return res.data;
     },
     staleTime: 1000 * 60 * 5,

@@ -102,7 +102,7 @@ const NavBar = () => {
           </div>
           <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow">
             {navItem("/", "Home", IoHomeOutline)}
-            {navItem("/allbooks", "Books", IoBookOutline)}
+            {navItem("/books", "Books", IoBookOutline)}
             {navItem("/aboutus", "About Us", IoInformationCircleOutline)}
             {navItem("/contactus", "Contact Us", MdOutlineConnectWithoutContact)}
             {navItem("/howtouse", "How to Use", PiHandTap)}
@@ -133,7 +133,7 @@ const NavBar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal gap-2">
           {navItem("/", "Home", IoHomeOutline)}
-          {navItem("/allbooks", "Books", IoBookOutline)}
+          {navItem("/books", "Books", IoBookOutline)}
           {navItem("/aboutus", "About Us", IoInformationCircleOutline)}
           {navItem("/contactus", "Contact Us", MdOutlineConnectWithoutContact)}
           {navItem("/howtouse", "How to Use", PiHandTap)}

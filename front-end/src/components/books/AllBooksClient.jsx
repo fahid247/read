@@ -5,6 +5,7 @@ import useAxios from "@/hooks/UseAxios";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Loading from "@/app/Loading";
 
 const card = {
   hidden: { opacity: 0, y: 30 },
@@ -26,7 +27,7 @@ const AllBooksClient = () => {
   } = useQuery({
     queryKey: ["allBooks"],
     queryFn: async () => {
-      const res = await axios.get("/public/books");
+      const res = await axios.get("/books");
       return res.data;
     },
     staleTime: 1000 * 60 * 5,
@@ -34,7 +35,7 @@ const AllBooksClient = () => {
   });
 
   if (isLoading)
-    return <p className="text-center py-20">Loading books...</p>;
+    return <Loading></Loading>;
 
   if (isError)
     return (

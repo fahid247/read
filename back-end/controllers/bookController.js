@@ -1,10 +1,20 @@
 const {books,users} = require('../config/db')
 const {ObjectId} = require('mongodb')
 
-exports.getBooks = async(req,res)=>{
- const result = await books.find().toArray()
- res.send(result)
-}
+exports.getBooks = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 0;
+
+    const result = await books
+      .find()
+      .limit(limit)
+      .toArray();
+
+    res.send(result);
+  } catch (error) {
+    res.status(500).send({ message: "Failed to fetch books" });
+  }
+};
 
 exports.getBook = async(req,res)=>{
  const id=req.params.id
