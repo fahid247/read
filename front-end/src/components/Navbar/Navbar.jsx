@@ -4,16 +4,16 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import {
-  FaUserCircle,
-  FaSignOutAlt,
-} from "react-icons/fa";
+import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import {
   IoBookOutline,
   IoHomeOutline,
   IoInformationCircleOutline,
 } from "react-icons/io5";
-import { MdOutlineConnectWithoutContact, MdOutlineDashboard } from "react-icons/md";
+import {
+  MdOutlineConnectWithoutContact,
+  MdOutlineDashboard,
+} from "react-icons/md";
 import { PiHandTap } from "react-icons/pi";
 import Swal from "sweetalert2";
 import Image from "next/image";
@@ -34,7 +34,7 @@ const NavBar = () => {
 
     // Apply theme to html
     document.documentElement.setAttribute("data-theme", savedTheme || theme);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -76,14 +76,14 @@ const NavBar = () => {
           title: "Logged out successfully",
           timer: 1200,
           showConfirmButton: false,
-        })
+        }),
       )
       .catch((error) =>
         Swal.fire({
           icon: "error",
           title: "Logout failed",
           text: error.message,
-        })
+        }),
       );
   };
 
@@ -104,7 +104,11 @@ const NavBar = () => {
             {navItem("/", "Home", IoHomeOutline)}
             {navItem("/books", "Books", IoBookOutline)}
             {navItem("/aboutus", "About Us", IoInformationCircleOutline)}
-            {navItem("/contactus", "Contact Us", MdOutlineConnectWithoutContact)}
+            {navItem(
+              "/contactus",
+              "Contact Us",
+              MdOutlineConnectWithoutContact,
+            )}
             {navItem("/howtouse", "How to Use", PiHandTap)}
             {navItem("/dashboard", "Dashboard", MdOutlineDashboard)}
             {user ? (
@@ -156,15 +160,20 @@ const NavBar = () => {
 
         {/* User */}
         {user ? (
-          <motion.div whileHover={{ scale: 1.05 }} className="flex items-center gap-3">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="flex items-center gap-3"
+          >
             {user.photoURL ? (
-              <Image
-                src={user.photoURL}
-                alt="profile"
-                width={36}
-                height={36}
-                className="rounded-full object-cover border"
-              />
+              <div className="w-9 h-9 rounded-full overflow-hidden border">
+                <Image
+                  src={user.photoURL}
+                  alt="profile"
+                  width={36}
+                  height={36}
+                  className="object-cover object-center w-full h-full"
+                />
+              </div>
             ) : (
               <FaUserCircle size={32} />
             )}

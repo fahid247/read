@@ -11,6 +11,7 @@ import useAuth from "../../Hooks/UseAuth";
 import Swal from "sweetalert2";
 import Loading from "../Loading";
 import { Mail, Lock, ArrowRight, Github, Chrome } from "lucide-react";
+import ReadMartLogo from "@/components/Logo/ReadMartLogo";
 
 const Login = () => {
   const { signInGoogle, updateUserProfile, signInUser } = useAuth();
@@ -138,7 +139,7 @@ const Login = () => {
           {/* Logo/Brand */}
           <div className="mb-8">
             <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-primary/30">
-              <span className="text-[#0A0F1E] font-bold text-xl">L</span>
+              <span className="text-[#0A0F1E] font-bold text-xl"><ReadMartLogo></ReadMartLogo></span>
             </div>
             <h1 className="text-4xl font-bold text-white mb-2">Welcome Back</h1>
             <p className="text-gray-400 text-sm">
