@@ -7,4 +7,6 @@ router.post('/',controller.addWish)
 
 router.get('/:email',controller.getWishList)
 
+router.delete('/:id', controller.removeWish)
+
 module.exports = router
