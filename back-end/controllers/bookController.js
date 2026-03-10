@@ -4,14 +4,19 @@ const {ObjectId} = require('mongodb')
 exports.getBooks = async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 0;
+    const librarianEmail = req.query.librarianEmail;
+
+    // Build the query
+    const query = librarianEmail ? { librarianEmail } : {};
 
     const result = await books
-      .find()
+      .find(query)
       .limit(limit)
       .toArray();
 
     res.send(result);
   } catch (error) {
+    console.error(error);
     res.status(500).send({ message: "Failed to fetch books" });
   }
 };

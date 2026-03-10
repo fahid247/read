@@ -9,7 +9,6 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import useAuth from "@/hooks/UseAuth";
 import useAxiosSecure from "@/hooks/UseAxiosSecure";
 import Swal from "sweetalert2";
-import Loading from "../../Loading";
 import { Mail, Lock, ArrowRight, Github, Chrome } from "lucide-react";
 import ReadMartLogo from "@/components/Logo/ReadMartLogo";
 
@@ -212,7 +211,7 @@ const Login = () => {
               disabled={loading}
             >
               {loading ? (
-                <Loading />
+                <span className="loading loading-spinner text-accent loading-xl"></span>
               ) : (
                 <>
                   Sign In
@@ -241,7 +240,7 @@ const Login = () => {
             disabled={loading}
           >
             {loading ? (
-              <Loading />
+             <span className="loading loading-spinner text-accent loading-xl"></span>
             ) : (
               <>
                 <Chrome size={18} className="text-primary" />

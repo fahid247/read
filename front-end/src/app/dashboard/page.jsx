@@ -28,6 +28,7 @@ import { motion } from "framer-motion";
 import { TbJewishStar } from "react-icons/tb";
 import { MdOutlinePayments } from "react-icons/md";
 import Loading from "../Loading";
+import Image from "next/image";
 
 const DashboardHome = () => {
   const { user, loading } = useAuth();
@@ -35,7 +36,10 @@ const DashboardHome = () => {
   const axiosSecure = useAxiosSecure();
 
   // Fetch user's orders count and recent orders
-  const { data: ordersData = { count: 0, recent: [] }, isLoading: ordersLoading } = useQuery({
+  const {
+    data: ordersData = { count: 0, recent: [] },
+    isLoading: ordersLoading,
+  } = useQuery({
     queryKey: ["user-orders-stats", user?.email],
     enabled: !!user?.email && role === "user",
     queryFn: async () => {
@@ -43,13 +47,13 @@ const DashboardHome = () => {
       const orders = res.data;
       return {
         count: orders.length,
-        recent: orders.slice(0, 3).map(order => ({
+        recent: orders.slice(0, 3).map((order) => ({
           id: order._id,
           bookName: order.bookName,
           status: order.orderStatus,
           date: order.orderedAt,
-          amount: order.price
-        }))
+          amount: order.price,
+        })),
       };
     },
   });
@@ -65,21 +69,26 @@ const DashboardHome = () => {
   });
 
   // Fetch user's payment history count and total spent
-  const { data: paymentData = { count: 0, total: 0, recent: [] }, isLoading: paymentsLoading } = useQuery({
+  const {
+    data: paymentData = { count: 0, total: 0, recent: [] },
+    isLoading: paymentsLoading,
+  } = useQuery({
     queryKey: ["user-payments-stats", user?.email],
     enabled: !!user?.email && role === "user",
     queryFn: async () => {
-      const res = await axiosSecure.get(`/payments?customerEmail=${user.email}`);
+      const res = await axiosSecure.get(
+        `/payments?customerEmail=${user.email}`,
+      );
       const payments = res.data;
       return {
         count: payments.length,
         total: payments.reduce((sum, p) => sum + (p.amount || 0), 0),
-        recent: payments.slice(0, 3).map(payment => ({
+        recent: payments.slice(0, 3).map((payment) => ({
           id: payment._id,
           amount: payment.amount,
           date: payment.paymentDate,
-          status: payment.status
-        }))
+          status: payment.status,
+        })),
       };
     },
   });
@@ -95,122 +104,141 @@ const DashboardHome = () => {
   });
 
   // Fetch librarian's orders count
-  const { data: librarianOrdersCount = 0, isLoading: librarianOrdersLoading } = useQuery({
-    queryKey: ["librarian-orders-count", user?.email],
-    enabled: !!user?.email && role === "librarian",
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/orders?librarianEmail=${user.email}`);
-      return res.data.length;
-    },
-  });
+  const { data: librarianOrdersCount = 0, isLoading: librarianOrdersLoading } =
+    useQuery({
+      queryKey: ["librarian-orders-count", user?.email],
+      enabled: !!user?.email && role === "librarian",
+      queryFn: async () => {
+        const res = await axiosSecure.get(
+          `/orders?librarianEmail=${user.email}`,
+        );
+        return res.data.length;
+      },
+    });
 
   // Fetch admin stats
-  const { data: adminStats = { users: 0, books: 0, orders: 0 }, isLoading: adminStatsLoading } = useQuery({
+  const {
+    data: adminStats = { users: 0, books: 0, orders: 0 },
+    isLoading: adminStatsLoading,
+  } = useQuery({
     queryKey: ["admin-stats"],
     enabled: role === "admin",
     queryFn: async () => {
       const [usersRes, booksRes, ordersRes] = await Promise.all([
         axiosSecure.get("/users"),
         axiosSecure.get("/books"),
-        axiosSecure.get("/orders")
+        axiosSecure.get("/orders"),
       ]);
       return {
         users: usersRes.data.length,
         books: booksRes.data.length,
-        orders: ordersRes.data.length
+        orders: ordersRes.data.length,
       };
     },
   });
 
   // Fetch recent activities based on role
-  const { data: recentActivities = [], isLoading: activitiesLoading } = useQuery({
-    queryKey: ["recent-activities", role, user?.email],
-    enabled: !!user?.email,
-    queryFn: async () => {
-      const activities = [];
+  const { data: recentActivities = [], isLoading: activitiesLoading } =
+    useQuery({
+      queryKey: ["recent-activities", role, user?.email],
+      enabled: !!user?.email,
+      queryFn: async () => {
+        const activities = [];
 
-      if (role === "user") {
-        // Get recent orders
-        const ordersRes = await axiosSecure.get(`/orders?email=${user.email}&limit=3&sort=-orderedAt`);
-        const orders = ordersRes.data.slice(0, 2).map(order => ({
-          type: "order",
-          description: `Ordered "${order.bookName}"`,
-          date: order.orderedAt,
-          status: order.orderStatus,
-          amount: order.price,
-          icon: ShoppingBagIcon,
-          color: "text-primary"
-        }));
-        activities.push(...orders);
+        if (role === "user") {
+          // Get recent orders
+          const ordersRes = await axiosSecure.get(
+            `/orders?email=${user.email}&limit=3&sort=-orderedAt`,
+          );
+          const orders = ordersRes.data.slice(0, 2).map((order) => ({
+            type: "order",
+            description: `Ordered "${order.bookName}"`,
+            date: order.orderedAt,
+            status: order.orderStatus,
+            amount: order.price,
+            icon: ShoppingBagIcon,
+            color: "text-primary",
+          }));
+          activities.push(...orders);
 
-        // Get recent wishlist additions
-        const wishRes = await axiosSecure.get(`/wishlist/${user.email}?limit=2&sort=-wishedAt`);
-        const wishlist = wishRes.data.slice(0, 2).map(item => ({
-          type: "wishlist",
-          description: `Added "${item.bookName}" to wishlist`,
-          date: item.wishedAt,
-          icon: HeartIcon,
-          color: "text-accent"
-        }));
-        activities.push(...wishlist);
+          // Get recent wishlist additions
+          const wishRes = await axiosSecure.get(
+            `/wishlist/${user.email}?limit=2&sort=-wishedAt`,
+          );
+          const wishlist = wishRes.data.slice(0, 2).map((item) => ({
+            type: "wishlist",
+            description: `Added "${item.bookName}" to wishlist`,
+            date: item.wishedAt,
+            icon: HeartIcon,
+            color: "text-accent",
+          }));
+          activities.push(...wishlist);
 
-        // Get recent payments
-        const payRes = await axiosSecure.get(`/payments?email=${user.email}&limit=2&sort=-paymentDate`);
-        const payments = payRes.data.slice(0, 2).map(payment => ({
-          type: "payment",
-          description: `Payment of ৳${payment.amount}`,
-          date: payment.paymentDate,
-          status: payment.status,
-          icon: CreditCardIcon,
-          color: "text-success"
-        }));
-        activities.push(...payments);
-      }
+          // Get recent payments
+          const payRes = await axiosSecure.get(
+            `/payments?email=${user.email}&limit=2&sort=-paymentDate`,
+          );
+          const payments = payRes.data.slice(0, 2).map((payment) => ({
+            type: "payment",
+            description: `Payment of ৳${payment.amount}`,
+            date: payment.paymentDate,
+            status: payment.status,
+            icon: CreditCardIcon,
+            color: "text-success",
+          }));
+          activities.push(...payments);
+        }
 
-      if (role === "librarian") {
-        // Get recent orders for librarian's books
-        const ordersRes = await axiosSecure.get(`/orders?librarianEmail=${user.email}&limit=5&sort=-orderedAt`);
-        const orders = ordersRes.data.slice(0, 3).map(order => ({
-          type: "order",
-          description: `New order for "${order.bookName}"`,
-          date: order.orderedAt,
-          status: order.orderStatus,
-          icon: ShoppingBagIcon,
-          color: "text-primary"
-        }));
-        activities.push(...orders);
-      }
+        if (role === "librarian") {
+          // Get recent orders for librarian's books
+          const ordersRes = await axiosSecure.get(
+            `/orders?librarianEmail=${user.email}&limit=5&sort=-orderedAt`,
+          );
+          const orders = ordersRes.data.slice(0, 3).map((order) => ({
+            type: "order",
+            description: `New order for "${order.bookName}"`,
+            date: order.orderedAt,
+            status: order.orderStatus,
+            icon: ShoppingBagIcon,
+            color: "text-primary",
+          }));
+          activities.push(...orders);
+        }
 
-      if (role === "admin") {
-        // Get recent user registrations
-        const usersRes = await axiosSecure.get("/users?limit=3&sort=-createdAt");
-        const users = usersRes.data.slice(0, 2).map(user => ({
-          type: "user",
-          description: `New user registered: ${user.name}`,
-          date: user.createdAt || new Date(),
-          icon: UsersIcon,
-          color: "text-info"
-        }));
-        activities.push(...users);
+        if (role === "admin") {
+          // Get recent user registrations
+          const usersRes = await axiosSecure.get(
+            "/users?limit=3&sort=-createdAt",
+          );
+          const users = usersRes.data.slice(0, 2).map((user) => ({
+            type: "user",
+            description: `New user registered: ${user.name}`,
+            date: user.createdAt || new Date(),
+            icon: UsersIcon,
+            color: "text-info",
+          }));
+          activities.push(...users);
 
-        // Get recent orders
-        const ordersRes = await axiosSecure.get("/orders?limit=3&sort=-orderedAt");
-        const orders = ordersRes.data.slice(0, 2).map(order => ({
-          type: "order",
-          description: `New order placed`,
-          date: order.orderedAt,
-          icon: ShoppingBagIcon,
-          color: "text-primary"
-        }));
-        activities.push(...orders);
-      }
+          // Get recent orders
+          const ordersRes = await axiosSecure.get(
+            "/orders?limit=3&sort=-orderedAt",
+          );
+          const orders = ordersRes.data.slice(0, 2).map((order) => ({
+            type: "order",
+            description: `New order placed`,
+            date: order.orderedAt,
+            icon: ShoppingBagIcon,
+            color: "text-primary",
+          }));
+          activities.push(...orders);
+        }
 
-      // Sort by date and take latest 5
-      return activities
-        .sort((a, b) => new Date(b.date) - new Date(a.date))
-        .slice(0, 5);
-    },
-  });
+        // Sort by date and take latest 5
+        return activities
+          .sort((a, b) => new Date(b.date) - new Date(a.date))
+          .slice(0, 5);
+      },
+    });
 
   if (roleLoading || loading) return <Loading />;
 
@@ -224,13 +252,13 @@ const DashboardHome = () => {
 
   // Get role badge color
   const getRoleBadge = () => {
-    switch(role) {
-      case 'admin':
-        return { color: 'from-rose-500 to-red-600', icon: ShieldCheckIcon };
-      case 'librarian':
-        return { color: 'from-indigo-500 to-purple-600', icon: BookOpenIcon };
+    switch (role) {
+      case "admin":
+        return { color: "from-rose-500 to-red-600", icon: ShieldCheckIcon };
+      case "librarian":
+        return { color: "from-indigo-500 to-purple-600", icon: BookOpenIcon };
       default:
-        return { color: 'from-primary to-accent', icon: UserIcon };
+        return { color: "from-primary to-accent", icon: UserIcon };
     }
   };
 
@@ -241,96 +269,96 @@ const DashboardHome = () => {
   const getStats = () => {
     if (role === "user") {
       return [
-        { 
-          label: 'Total Orders', 
-          value: ordersData.count.toString(), 
-          icon: ShoppingBagIcon, 
-          color: 'text-primary',
-          loading: ordersLoading
+        {
+          label: "Total Orders",
+          value: ordersData.count.toString(),
+          icon: ShoppingBagIcon,
+          color: "text-primary",
+          loading: ordersLoading,
         },
-        { 
-          label: 'Wishlist', 
-          value: wishlistCount.toString(), 
-          icon: HeartIcon, 
-          color: 'text-accent',
-          loading: wishlistLoading
+        {
+          label: "Wishlist",
+          value: wishlistCount.toString(),
+          icon: HeartIcon,
+          color: "text-accent",
+          loading: wishlistLoading,
         },
-        { 
-          label: 'Payments', 
-          value: paymentData.count.toString(), 
-          icon: CreditCardIcon, 
-          color: 'text-success',
-          loading: paymentsLoading
+        {
+          label: "Payments",
+          value: paymentData.count.toString(),
+          icon: CreditCardIcon,
+          color: "text-success",
+          loading: paymentsLoading,
         },
-        { 
-          label: 'Total Spent', 
-          value: `৳${paymentData.total}`, 
-          icon: DocumentTextIcon, 
-          color: 'text-info',
-          loading: paymentsLoading
+        {
+          label: "Total Spent",
+          value: `৳${paymentData.total}`,
+          icon: DocumentTextIcon,
+          color: "text-info",
+          loading: paymentsLoading,
         },
       ];
     }
 
     if (role === "librarian") {
       return [
-        { 
-          label: 'My Books', 
-          value: booksCount.toString(), 
-          icon: BookOpenIcon, 
-          color: 'text-indigo-500',
-          loading: booksLoading
+        {
+          label: "My Books",
+          value: booksCount.toString(),
+          icon: BookOpenIcon,
+          color: "text-indigo-500",
+          loading: booksLoading,
         },
-        { 
-          label: 'Orders', 
-          value: librarianOrdersCount.toString(), 
-          icon: ShoppingBagIcon, 
-          color: 'text-blue-500',
-          loading: librarianOrdersLoading
+        {
+          label: "Orders",
+          value: librarianOrdersCount.toString(),
+          icon: ShoppingBagIcon,
+          color: "text-blue-500",
+          loading: librarianOrdersLoading,
         },
-        { 
-          label: 'Pending Orders', 
-          value: '0', 
-          icon: ClipboardDocumentListIcon, 
-          color: 'text-amber-500' 
+        {
+          label: "Pending Orders",
+          value: "0",
+          icon: ClipboardDocumentListIcon,
+          color: "text-amber-500",
         },
-        { 
-          label: 'Revenue', 
-          value: '৳0', 
-          icon: CreditCardIcon, 
-          color: 'text-green-500' 
+        {
+          label: "Revenue",
+          value: "৳0",
+          icon: CreditCardIcon,
+          color: "text-green-500",
         },
       ];
     }
 
     if (role === "admin") {
       return [
-        { 
-          label: 'Total Users', 
-          value: adminStats.users.toString(), 
-          icon: UsersIcon, 
-          color: 'text-rose-500',
-          loading: adminStatsLoading
+        {
+          label: "Total Users",
+          value: adminStats.users.toString(),
+          icon: UsersIcon,
+          color: "text-rose-500",
+          loading: adminStatsLoading,
         },
-        { 
-          label: 'Total Books', 
-          value: adminStats.books.toString(), 
-          icon: BookOpenIcon, 
-          color: 'text-indigo-500',
-          loading: adminStatsLoading
+        {
+          label: "Total Books",
+          value: adminStats.books.toString(),
+          icon: BookOpenIcon,
+          color: "text-indigo-500",
+          loading: adminStatsLoading,
         },
-        { 
-          label: 'Total Orders', 
-          value: adminStats.orders.toString(), 
-          icon: ShoppingBagIcon, 
-          color: 'text-primary',
-          loading: adminStatsLoading
+        {
+          label: "Total Orders",
+          value: adminStats.orders.toString(),
+          icon: ShoppingBagIcon,
+          color: "text-primary",
+          loading: adminStatsLoading,
         },
-        { 
-          label: 'Revenue', 
-          value: '৳0', 
-          icon: ChartBarIcon, 
-          color: 'text-success' 
+        {
+          label: "Revenue",
+          value: "৳0",
+          icon: ChartBarIcon,
+          color: "text-success",
         },
       ];
     }
@@ -347,7 +375,7 @@ const DashboardHome = () => {
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl"></div>
-        
+
         <div className="relative flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
@@ -357,11 +385,11 @@ const DashboardHome = () => {
                 transition={{ type: "spring", stiffness: 200 }}
                 className="w-12 h-12 bg-linear-to-br from-primary to-green-600 rounded-xl flex items-center justify-center shadow-lg"
               >
-                <span className="text-2xl text-white font-bold">
+                 <span className="text-2xl text-white font-bold">
                   {user?.displayName?.charAt(0) || user?.email?.charAt(0) || "U"}
                 </span>
               </motion.div>
-              
+
               <div>
                 <motion.p
                   initial={{ opacity: 0, x: -20 }}
@@ -376,7 +404,7 @@ const DashboardHome = () => {
                   transition={{ delay: 0.1 }}
                   className="text-2xl md:text-3xl font-bold playfair"
                 >
-                  {user?.displayName || user?.email?.split('@')[0] || "User"}!
+                  {user?.displayName || user?.email?.split("@")[0] || "User"}!
                 </motion.h1>
               </div>
             </div>
@@ -388,7 +416,8 @@ const DashboardHome = () => {
               className="text-base-content/70 flex items-center gap-2 text-sm inter"
             >
               <SparklesIcon className="w-4 h-4 text-accent" />
-              Welcome to your dashboard. Here&apos;s what&apos;s happening today.
+              Welcome to your dashboard. Here&apos;s what&apos;s happening
+              today.
             </motion.p>
           </div>
 
@@ -400,7 +429,9 @@ const DashboardHome = () => {
             className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-linear-to-r ${roleBadge.color} text-white shadow-lg`}
           >
             <RoleIcon className="w-4 h-4" />
-            <span className="text-sm font-semibold capitalize inter">{role}</span>
+            <span className="text-sm font-semibold capitalize inter">
+              {role}
+            </span>
           </motion.div>
         </div>
 
@@ -412,15 +443,22 @@ const DashboardHome = () => {
           className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8"
         >
           {stats.map((stat, idx) => (
-            <div key={idx} className="bg-base-100 rounded-xl p-4 border border-base-300">
+            <div
+              key={idx}
+              className="bg-base-100 rounded-xl p-4 border border-base-300"
+            >
               <div className="flex items-center gap-2 mb-1">
                 <stat.icon className={`w-4 h-4 ${stat.color}`} />
-                <span className="text-xs text-base-content/60 inter">{stat.label}</span>
+                <span className="text-xs text-base-content/60 inter">
+                  {stat.label}
+                </span>
               </div>
               {stat.loading ? (
                 <div className="h-6 w-16 bg-base-200 animate-pulse rounded"></div>
               ) : (
-                <span className="text-xl font-bold text-base-content">{stat.value}</span>
+                <span className="text-xl font-bold text-base-content">
+                  {stat.value}
+                </span>
               )}
             </div>
           ))}
@@ -433,9 +471,9 @@ const DashboardHome = () => {
           Quick Actions
         </h2>
         <p className="text-sm text-base-content/40 inter">
-          {role === 'user' && 'Manage your shopping experience'}
-          {role === 'librarian' && 'Manage your books and orders'}
-          {role === 'admin' && 'Control platform settings'}
+          {role === "user" && "Manage your shopping experience"}
+          {role === "librarian" && "Manage your books and orders"}
+          {role === "admin" && "Control platform settings"}
         </p>
       </div>
 
@@ -500,7 +538,7 @@ const DashboardHome = () => {
             desc="View orders for your books"
             icon={<ClipboardDocumentListIcon />}
             gradient="from-blue-500 to-cyan-500"
-            link="/dashboard/librarian-orders"
+            link="/dashboard/librarian/librarian-orders"
             stat={librarianOrdersCount.toString()}
             loading={librarianOrdersLoading}
           />
@@ -589,26 +627,36 @@ const DashboardHome = () => {
             recentActivities.map((activity, idx) => {
               const Icon = activity.icon;
               return (
-                <div key={idx} className="flex items-center gap-3 text-sm group hover:bg-base-100 p-2 rounded-lg transition-colors">
-                  <Icon className={`w-4 h-4 ${activity.color} group-hover:scale-110 transition-transform`} />
+                <div
+                  key={idx}
+                  className="flex items-center gap-3 text-sm group hover:bg-base-100 p-2 rounded-lg transition-colors"
+                >
+                  <Icon
+                    className={`w-4 h-4 ${activity.color} group-hover:scale-110 transition-transform`}
+                  />
                   <span className="text-base-content/80 inter flex-1">
                     {activity.description}
                   </span>
                   <span className="text-xs text-base-content/40">
-                    {new Date(activity.date).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
+                    {new Date(activity.date).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
                     })}
                   </span>
                   {activity.status && (
-                    <span className={`text-xs px-2 py-1 rounded-full ${
-                      activity.status === 'pending' ? 'bg-warning/10 text-warning' :
-                      activity.status === 'delivered' ? 'bg-success/10 text-success' :
-                      activity.status === 'cancelled' ? 'bg-error/10 text-error' :
-                      'bg-primary/10 text-primary'
-                    }`}>
+                    <span
+                      className={`text-xs px-2 py-1 rounded-full ${
+                        activity.status === "pending"
+                          ? "bg-warning/10 text-warning"
+                          : activity.status === "delivered"
+                            ? "bg-success/10 text-success"
+                            : activity.status === "cancelled"
+                              ? "bg-error/10 text-error"
+                              : "bg-primary/10 text-primary"
+                      }`}
+                    >
                       {activity.status}
                     </span>
                   )}
@@ -642,19 +690,28 @@ const DashboardGrid = ({ children }) => (
 );
 
 /* CARD - Modernized with loading state */
-const DashboardCard = ({ title, desc, icon, gradient, link, stat, loading }) => (
+const DashboardCard = ({
+  title,
+  desc,
+  icon,
+  gradient,
+  link,
+  stat,
+  loading,
+}) => (
   <Link href={link}>
     <motion.div
-      whileHover={{ 
+      whileHover={{
         y: -6,
-        boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)"
+        boxShadow:
+          "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
       }}
       transition={{ type: "spring", stiffness: 300 }}
       className="group relative bg-base-100 rounded-2xl p-6 border border-base-300 hover:border-primary/30 transition-all duration-300 cursor-pointer overflow-hidden"
     >
       {/* Background gradient on hover */}
       <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-      
+
       {/* Decorative corner */}
       <div className="absolute top-0 right-0 w-20 h-20 bg-linear-to-br from-primary/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
@@ -679,20 +736,17 @@ const DashboardCard = ({ title, desc, icon, gradient, link, stat, loading }) => 
             <h3 className="text-lg font-semibold text-base-content group-hover:text-primary transition-colors inter">
               {title}
             </h3>
-            {stat && (
-              loading ? (
+            {stat &&
+              (loading ? (
                 <div className="h-5 w-12 bg-base-200 animate-pulse rounded-full"></div>
               ) : (
                 <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-1 rounded-full">
                   {stat}
                 </span>
-              )
-            )}
+              ))}
           </div>
-          <p className="text-sm text-base-content/60 mt-1 inter">
-            {desc}
-          </p>
-          
+          <p className="text-sm text-base-content/60 mt-1 inter">{desc}</p>
+
           {/* Arrow indicator */}
           <div className="flex items-center gap-1 mt-3 text-primary/60 group-hover:text-primary transition-colors">
             <span className="text-xs font-medium">View</span>

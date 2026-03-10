@@ -214,7 +214,7 @@ const MyWishList = () => {
                       
                       <Link
                         href={`/book-details/${item.bookId}`}
-                        className="btn btn-sm btn-primary shadow-lg shadow-primary/20 hover:shadow-primary/30"
+                        className="btn btn-sm btn-primary  shadow-lg shadow-primary/20 hover:shadow-primary/30"
                       >
                         <HiOutlineShoppingBag size={16} />
                         View
