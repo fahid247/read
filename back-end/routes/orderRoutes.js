@@ -7,6 +7,8 @@ router.post("/", controller.createOrder);
 
 router.get("/", controller.getOrders);
 
+router.get("/allOrders", controller.getAllOrders);
+
 // GET ORDER STATUS BY USER EMAIL
 router.get("/:email/status", controller.getOrdersStatusByEmail);
 

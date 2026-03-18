@@ -20,6 +20,15 @@ exports.createOrder = async(req, res)=>{
     }
 }
 
+exports.getAllOrders = async (req, res) => {
+  try {
+    const Orders = await orders.find().toArray();
+    res.send(Orders);
+  } catch (error) {
+    res.status(500).send({ message: "Failed to fetch orders", error });
+  }
+};
+
 exports.getOrders = async(req,res)=>{
  const email=req.query.email
 

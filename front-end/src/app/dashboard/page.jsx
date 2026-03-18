@@ -122,7 +122,7 @@ const DashboardHome = () => {
 
   // Fetch admin stats
   const {
-    data: adminStats = { users: 0, books: 0, orders: 0 },
+    data: adminStats = { users: 0, books: 0, orders: 0 , totalRevenue: 0},
     isLoading: adminStatsLoading,
   } = useQuery({
     queryKey: ["admin-stats"],
@@ -131,12 +131,14 @@ const DashboardHome = () => {
       const [usersRes, booksRes, ordersRes] = await Promise.all([
         axiosSecure.get("/users"),
         axiosSecure.get("/books"),
-        axiosSecure.get("/orders"),
+        axiosSecure.get("/orders/allOrders"),
       ]);
+      const totalRevenue = ordersRes.data.reduce((sum, order) => sum + (Number(order.price) || 0), 0);
       return {
         users: usersRes.data.length,
         books: booksRes.data.length,
         orders: ordersRes.data.length,
+        totalRevenue,
       };
     },
   });
@@ -360,7 +362,7 @@ const DashboardHome = () => {
         },
         {
           label: "Revenue",
-          value: "৳0",
+          value:`৳${adminStats.totalRevenue}`,
           icon: ChartBarIcon,
           color: "text-success",
         },
@@ -374,9 +376,8 @@ const DashboardHome = () => {
 
   return (
     <div className="min-h-screen bg-base-100">
-      {/* Hero Section with Welcome Card */}
       <div className="relative overflow-hidden bg-linear-to-br from-base-200 to-base-300/50 rounded-3xl p-8 mb-8 border border-base-300">
-        {/* Decorative elements */}
+
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl"></div>
 
@@ -425,7 +426,7 @@ const DashboardHome = () => {
             </motion.p>
           </div>
 
-          {/* Role Badge */}
+      
           <motion.div
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -439,7 +440,7 @@ const DashboardHome = () => {
           </motion.div>
         </div>
 
-        {/* Quick Stats - Dynamic */}
+       
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -469,7 +470,7 @@ const DashboardHome = () => {
         </motion.div>
       </div>
 
-      {/* Section Title */}
+     
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold playfair text-base-content">
           Quick Actions
@@ -573,7 +574,7 @@ const DashboardHome = () => {
             desc="Control user roles and permissions"
             icon={<UsersIcon />}
             gradient="from-rose-500 to-pink-500"
-            link="/dashboard/all-users"
+            link="/dashboard/admin/all-users"
             stat={adminStats.users.toString()}
             loading={adminStatsLoading}
           />
@@ -597,14 +598,15 @@ const DashboardHome = () => {
             stat={adminStats.orders.toString()}
             loading={adminStatsLoading}
           />
-
+          
           <DashboardCard
-            title="Overview"
-            desc="Platform statistics and insights"
-            icon={<ChartBarIcon />}
-            gradient="from-purple-500 to-pink-500"
-            link="/dashboard/overview"
+            title="My Profile"
+            desc="Manage your personal information"
+            icon={<UserIcon />}
+            gradient="from-amber-500 to-orange-500"
+            link="/dashboard/my-profile"
           />
+          
         </DashboardGrid>
       )}
 

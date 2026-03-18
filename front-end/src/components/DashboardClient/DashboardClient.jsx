@@ -17,6 +17,7 @@ import useRole from "@/Hooks/UseRole";
 import useAuth from "@/hooks/UseAuth";
 import ReadMartLogo from "@/components/Logo/ReadMartLogo";
 import { LuClipboardList } from "react-icons/lu";
+import { ShoppingBagIcon, UsersIcon } from "@heroicons/react/24/outline";
 
 const DashboardClient = ({ children }) => {
   const { role, roleLoading } = useRole();
@@ -256,6 +257,24 @@ const DashboardClient = ({ children }) => {
                   </div>
                 </li>
                 
+                   <li>
+                  <Link
+                    href="/dashboard/admin/manageUsers"
+                    className={`is-drawer-close:tooltip is-drawer-close:tooltip-right group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${
+                      isActive("/dashboard/admin/manageUsers") 
+                        ? "bg-linear-to-r from-primary/20 to-primary/5 text-primary font-medium" 
+                        : "hover:bg-base-300/50 text-base-content/70 hover:text-base-content"
+                    }`}
+                    data-tip="Manage Users"
+                  >
+                    <UsersIcon className={`text-lg ${isActive("/dashboard/admin/manageUsers") ? "text-primary" : ""}`} />
+                    <span className="is-drawer-close:hidden inter text-sm">Manage Users</span>
+                    {isActive("/dashboard/admin/manageUsers") && (
+                      <span className="ml-auto w-1.5 h-1.5 bg-primary rounded-full is-drawer-close:hidden"></span>
+                    )}
+                  </Link>
+                </li>
+
                 <li>
                   <Link
                     href="/dashboard/admin/manageBooks"
@@ -269,6 +288,24 @@ const DashboardClient = ({ children }) => {
                     <RiContactsBook2Fill className={`text-lg ${isActive("/dashboard/admin/manageBooks") ? "text-primary" : ""}`} />
                     <span className="is-drawer-close:hidden inter text-sm">Manage Books</span>
                     {isActive("/dashboard/admin/manageBooks") && (
+                      <span className="ml-auto w-1.5 h-1.5 bg-primary rounded-full is-drawer-close:hidden"></span>
+                    )}
+                  </Link>
+                </li>
+             
+                <li>
+                  <Link
+                    href="/dashboard/admin/allOrders"
+                    className={`is-drawer-close:tooltip is-drawer-close:tooltip-right group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${
+                      isActive("/dashboard/admin/allOrders") 
+                        ? "bg-linear-to-r from-primary/20 to-primary/5 text-primary font-medium" 
+                        : "hover:bg-base-300/50 text-base-content/70 hover:text-base-content"
+                    }`}
+                    data-tip="All Orders"
+                  >
+                    <ShoppingBagIcon  className={`text-lg ${isActive("/dashboard/admin/allOrders") ? "text-primary" : ""}`} />
+                    <span className="is-drawer-close:hidden inter text-sm">Manage Books</span>
+                    {isActive("/dashboard/admin/allOrders") && (
                       <span className="ml-auto w-1.5 h-1.5 bg-primary rounded-full is-drawer-close:hidden"></span>
                     )}
                   </Link>

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import registerImg from "../../../public/ChatGPT Image Mar 8, 2026, 02_12_44 PM.png";
+import registerImg from "../../../../public/ChatGPT Image Mar 8, 2026, 02_12_44 PM.png";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
