@@ -13,7 +13,7 @@ import { TbJewishStarFilled } from "react-icons/tb";
 import { BsMoonStarsFill, BsSunFill } from "react-icons/bs";
 import { IoHomeOutline } from "react-icons/io5";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
-import useRole from "@/Hooks/UseRole";
+import useRole from "@/hooks/UseRole";
 import useAuth from "@/hooks/UseAuth";
 import ReadMartLogo from "@/components/Logo/ReadMartLogo";
 import { LuClipboardList } from "react-icons/lu";

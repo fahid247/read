@@ -3,8 +3,8 @@ import React from 'react';
 
 
 const axiosInstance = axios.create({
-    // baseURL: 'https://back-end-xi-lake.vercel.app/'
-    baseURL:'http://localhost:5000/'
+    baseURL: 'https://back-end-xi-lake.vercel.app/'
+    // baseURL:'http://localhost:5000/'
 })
 
 const useAxios = () => {

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import useAxios from "../../Hooks/UseAxios";
+import useAxios from "../../hooks/UseAxios";
 import Loading from "@/app/Loading";
 
 const LatestBooks = () => {

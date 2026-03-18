@@ -28,8 +28,8 @@ import {
 import { BiBookAdd } from "react-icons/bi";
 import { FaGithub, FaTwitter, FaLinkedin, FaFacebook } from "react-icons/fa";
 
-import useAuth from "@/Hooks/UseAuth";
-import useAxiosSecure from "@/Hooks/UseAxiosSecure";
+import useAuth from "@/hooks/UseAuth";
+import useAxiosSecure from "@/hooks/UseAxiosSecure";
 import Loading from "@/app/Loading";
 
 const MyProfile = () => {

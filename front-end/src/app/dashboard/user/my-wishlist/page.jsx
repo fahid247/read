@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import useAuth from "@/Hooks/UseAuth";
-import useAxiosSecure from "@/Hooks/UseAxiosSecure";
+import useAuth from "@/hooks/UseAuth";
+import useAxiosSecure from "@/hooks/UseAxiosSecure";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { FaHeartBroken, FaRegHeart } from "react-icons/fa";
 import { MdDeleteOutline, MdOutlineBookmarkAdded } from "react-icons/md";

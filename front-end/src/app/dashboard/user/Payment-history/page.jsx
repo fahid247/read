@@ -3,8 +3,8 @@
 import { useQuery } from "@tanstack/react-query";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import useAxiosSecure from "@/Hooks/UseAxiosSecure";
-import useAuth from "@/Hooks/UseAuth";
+import useAxiosSecure from "@/hooks/UseAxiosSecure";
+import useAuth from "@/hooks/UseAuth";
 import { 
   HiOutlineReceiptRefund, 
   HiOutlineCalendar, 

@@ -11,7 +11,7 @@ import {
   HiOutlineMail,
   HiOutlineArrowLeft
 } from "react-icons/hi";
-import useAxiosSecure from "@/Hooks/UseAxiosSecure";
+import useAxiosSecure from "@/hooks/UseAxiosSecure";
 
 const PaymentSuccess = () => {
   const searchParams = useSearchParams();

@@ -1,26 +1,28 @@
+"use client"
+
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function ForbiddenPage() {
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center px-4 py-12 relative overflow-hidden">
-      {/* Animated Background Elements - Pure Tailwind */}
+      
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-red-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-[blob_7s_ease-in-out_infinite]"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-[blob_7s_ease-in-out_infinite_2s]"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-[blob_7s_ease-in-out_infinite_4s]"></div>
       </div>
 
-      {/* Main Content */}
+     
       <div className="relative max-w-6xl w-full">
         <div className="backdrop-blur-sm bg-white/5 rounded-3xl border border-white/10 shadow-2xl p-8 md:p-12">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left Column - Image with Enhanced Effects */}
+            
             <div className="relative order-2 lg:order-1">
-              {/* Glow Rings */}
+              
               <div className="absolute inset-0 bg-linear-to-r from-red-500/20 to-orange-500/20 rounded-full blur-3xl animate-pulse"></div>
               
-              {/* Image Container with Floating Animation */}
+            
               <div className="relative w-72 h-72 mx-auto lg:w-96 lg:h-96 animate-[float_6s_ease-in-out_infinite]">
                 <div className="absolute inset-0 bg-linear-to-r from-red-500 to-orange-500 rounded-full blur-2xl opacity-20 animate-ping"></div>
                 <div className="relative w-full h-full transform hover:scale-105 transition-transform duration-700">
@@ -34,7 +36,7 @@ export default function ForbiddenPage() {
                 </div>
               </div>
 
-              {/* Decorative Badges */}
+             
               <div className="absolute -top-4 -right-4 lg:right-12 flex gap-2">
                 <span className="px-3 py-1 bg-red-500/20 text-red-400 text-xs font-mono rounded-full border border-red-500/30 backdrop-blur-sm">
                   ⚡ SECURE ZONE
@@ -47,9 +49,9 @@ export default function ForbiddenPage() {
               </div>
             </div>
 
-            {/* Right Column - Content */}
+           
             <div className="text-center lg:text-left space-y-8 order-1 lg:order-2">
-              {/* Status Code with Glitch Effect */}
+              
               <div className="space-y-4">
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-500/10 rounded-full border border-red-500/20 backdrop-blur-sm">
                   <span className="relative flex h-2 w-2">
@@ -66,7 +68,7 @@ export default function ForbiddenPage() {
                 </h1>
               </div>
 
-              {/* Title with Animation */}
+              
               <div className="space-y-3">
                 <h2 className="text-3xl lg:text-4xl font-bold text-white">
                   Access <span className="text-red-500 relative">
@@ -82,7 +84,7 @@ export default function ForbiddenPage() {
                 </p>
               </div>
 
-              {/* Security Tips Card */}
+            
               <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50 backdrop-blur-sm hover:border-slate-600/50 transition-colors duration-300">
                 <div className="flex items-start gap-4">
                   <div className="shrink-0">
@@ -113,7 +115,7 @@ export default function ForbiddenPage() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
+            
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Link
                   href="/"
@@ -137,7 +139,7 @@ export default function ForbiddenPage() {
                 </Link>
               </div>
 
-              {/* Quick Action Links */}
+             
               <div className="flex items-center justify-center lg:justify-start gap-6 pt-6 text-sm">
                 <Link href="/login" className="text-slate-500 hover:text-red-400 transition-colors group flex items-center gap-1">
                   <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -164,7 +166,7 @@ export default function ForbiddenPage() {
           </div>
         </div>
 
-        {/* Footer */}
+      
         <div className="text-center mt-8 text-slate-600 text-sm">
           <p>© {new Date().getFullYear()} Your Company. All rights reserved.</p>
           <div className="flex items-center justify-center gap-4 mt-2">
@@ -177,7 +179,7 @@ export default function ForbiddenPage() {
         </div>
       </div>
 
-      {/* Add custom animations to your global CSS or use style tag */}
+   
       <style jsx>{`
         @keyframes blob {
           0%, 100% { transform: translate(0px, 0px) scale(1); }

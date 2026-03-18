@@ -3,9 +3,9 @@
 import React from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import useAuth from "@/Hooks/UseAuth";
+import useAuth from "@/hooks/UseAuth";
 import useRole from "@/hooks/UseRole";
-import useAxiosSecure from "@/Hooks/UseAxiosSecure";
+import useAxiosSecure from "@/hooks/UseAxiosSecure";
 
 import {
   UserIcon,
