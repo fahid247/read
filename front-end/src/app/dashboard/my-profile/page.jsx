@@ -25,6 +25,7 @@ import {
   CreditCardIcon,
   LinkIcon,
 } from "@heroicons/react/24/outline";
+import { BiBookAdd } from "react-icons/bi";
 import { FaGithub, FaTwitter, FaLinkedin, FaFacebook } from "react-icons/fa";
 
 import useAuth from "@/Hooks/UseAuth";
@@ -84,6 +85,15 @@ const MyProfile = () => {
       },
     });
 
+   const { data: booksCount = 0, isLoading: booksLoading } = useQuery({
+       queryKey: ["librarian-books-count", user?.email],
+       enabled: !!user?.email && userRole === "librarian",
+       queryFn: async () => {
+         const res = await axiosSecure.get(`/books?librarianEmail=${user.email}`);
+         return res.data.length;
+       },
+     });
+
   // Update profile mutation
   const updateProfileMutation = useMutation({
     mutationFn: async (updatedData) => {
@@ -125,25 +135,27 @@ const MyProfile = () => {
     if (profileData) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
-        name: user?.displayName || profileData.name || "",
-        email: profileData.email || user?.email || "",
-        phone: profileData.phone || "",
-        address: profileData.address || "",
-        bio: profileData.bio || "",
-        website: profileData.website || "",
-        location: profileData.location || "",
+        name: profileData?.user?.displayName || user?.displayName || "",
+        email: profileData?.user?.email || user?.email || "",
+        phone: profileData?.user?.phone || "",
+        address: profileData?.user?.address || "",
+        bio: profileData?.user?.bio || "",
+        website: profileData?.user?.website || "",
+        location: profileData?.user?.location || "",
         photoURL:
-          profileData.photoURL || user?.photoURL || "/default-avatar.png",
+          profileData?.user?.photoURL ||
+          user?.photoURL ||
+          "/default-avatar.jpeg",
         social: {
-          github: profileData.social?.github || "",
-          twitter: profileData.social?.twitter || "",
-          linkedin: profileData.social?.linkedin || "",
-          facebook: profileData.social?.facebook || "",
+          github: profileData?.user?.social?.github || "",
+          twitter: profileData?.user?.social?.twitter || "",
+          linkedin: profileData?.user?.social?.linkedin || "",
+          facebook: profileData?.user?.social?.facebook || "",
         },
-        preferences: profileData.preferences || {
+        preferences: profileData?.user?.preferences || {
           emailNotifications: true,
         },
-        createdAt: profileData.createdAt,
+        createdAt: profileData?.user?.createdAt,
       });
     }
   }, [profileData, user]);
@@ -188,7 +200,7 @@ const MyProfile = () => {
         website: profileData.website || "",
         location: profileData.location || "",
         photoURL:
-          profileData.photoURL || user?.photoURL || "/default-avatar.png",
+          profileData.photoURL || user?.photoURL || "/default-avatar.jpeg",
         social: {
           github: profileData.social?.github || "",
           twitter: profileData.social?.twitter || "",
@@ -255,8 +267,8 @@ const MyProfile = () => {
     );
   }
 
-  console.log(formData)
-  console.log(user.displayName)
+  console.log(formData);
+  console.log(user.displayName);
 
   return (
     <div className="min-h-screen bg-base-200 py-8 sm:py-12 px-4">
@@ -291,14 +303,16 @@ const MyProfile = () => {
                 <div className="w-32 h-32 rounded-full bg-linear-to-br from-primary to-accent p-1 shadow-xl">
                   <Image
                     src={
-                      previewImage || formData.photoURL || "/default-avatar.png"
+                      previewImage ||
+                      formData.photoURL ||
+                      "/default-avatar.jpeg"
                     }
                     alt="Profile Avatar"
                     width={128}
                     height={128}
                     className="rounded-full object-cover bg-base-100 w-full h-full"
                     onError={(e) => {
-                      e.target.src = "/default-avatar.png";
+                      e.target.src = "/default-avatar.jpeg";
                     }}
                   />
                 </div>
@@ -361,36 +375,60 @@ const MyProfile = () => {
 
             {/* Stats Cards */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
-              <div className="bg-base-200/50 rounded-lg p-3">
-                <div className="flex items-center gap-2 text-primary mb-1">
-                  <ShoppingBagIcon className="w-4 h-4" />
-                  <span className="text-xs text-base-content/60">Orders</span>
-                </div>
-                <p className="text-xl font-bold text-base-content">
-                  {userStats.orders}
-                </p>
-              </div>
+              {userRole === "user" && (
+                <>
+                  <div className="bg-base-200/50 rounded-lg p-3">
+                    <div className="flex items-center gap-2 text-primary mb-1">
+                      <ShoppingBagIcon className="w-4 h-4" />
+                      <span className="text-xs text-base-content/60">
+                        Orders
+                      </span>
+                    </div>
+                    <p className="text-xl font-bold text-base-content">
+                      {userStats.orders}
+                    </p>
+                  </div>
 
-              <div className="bg-base-200/50 rounded-lg p-3">
-                <div className="flex items-center gap-2 text-accent mb-1">
-                  <HeartIcon className="w-4 h-4" />
-                  <span className="text-xs text-base-content/60">Wishlist</span>
-                </div>
-                <p className="text-xl font-bold text-base-content">
-                  {userStats.wishlist}
-                </p>
-              </div>
+                  <div className="bg-base-200/50 rounded-lg p-3">
+                    <div className="flex items-center gap-2 text-accent mb-1">
+                      <HeartIcon className="w-4 h-4" />
+                      <span className="text-xs text-base-content/60">
+                        Wishlist
+                      </span>
+                    </div>
+                    <p className="text-xl font-bold text-base-content">
+                      {userStats.wishlist}
+                    </p>
+                  </div>
 
-              <div className="bg-base-200/50 rounded-lg p-3">
-                <div className="flex items-center gap-2 text-success mb-1">
-                  <CreditCardIcon className="w-4 h-4" />
-                  <span className="text-xs text-base-content/60">Payments</span>
-                </div>
-                <p className="text-xl font-bold text-base-content">
-                  {userStats.payments}
-                </p>
-              </div>
-
+                  <div className="bg-base-200/50 rounded-lg p-3">
+                    <div className="flex items-center gap-2 text-success mb-1">
+                      <CreditCardIcon className="w-4 h-4" />
+                      <span className="text-xs text-base-content/60">
+                        Payments
+                      </span>
+                    </div>
+                    <p className="text-xl font-bold text-base-content">
+                      {userStats.payments}
+                    </p>
+                  </div>
+                </>
+              )}
+              {userRole === "librarian" && (
+                <>
+                  <div className="bg-base-200/50 rounded-lg p-3">
+                    <div className="flex items-center gap-2 text-primary mb-1">
+                      <BiBookAdd className="w-4 h-4" />
+                      <span className="text-xs text-base-content/60">
+                        Added Books
+                      </span>
+                    </div>
+                    <p className="text-xl font-bold text-base-content">
+                      {booksCount.toString()}
+                    </p>
+                  </div>
+                </>
+              )}
               <div className="bg-base-200/50 rounded-lg p-3">
                 <div className="flex items-center gap-2 text-info mb-1">
                   <CalendarIcon className="w-4 h-4" />

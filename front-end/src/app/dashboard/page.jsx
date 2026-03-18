@@ -104,15 +104,19 @@ const DashboardHome = () => {
   });
 
   // Fetch librarian's orders count
-  const { data: librarianOrdersCount = 0, isLoading: librarianOrdersLoading } =
+  const { data:{ count: librarianOrdersCount = 0, pendingCount = 0 , revenue = 0} = {} ,isLoading: librarianOrdersLoading } =
     useQuery({
       queryKey: ["librarian-orders-count", user?.email],
       enabled: !!user?.email && role === "librarian",
       queryFn: async () => {
         const res = await axiosSecure.get(
-          `/orders?librarianEmail=${user.email}`,
+          `/orders/${user.email}/status`,
         );
-        return res.data.length;
+         const pendingOrders = res.data.filter(order => order.orderStatus === "pending");
+
+         const deliveredOrders = res.data.filter(order => order.orderStatus === "delivered");
+         const revenue = deliveredOrders.reduce((sum, order) => sum + (order.price || 0), 0);
+        return { count:res.data.length, pendingCount: pendingOrders.length, revenue}
       },
     });
 
@@ -318,13 +322,13 @@ const DashboardHome = () => {
         },
         {
           label: "Pending Orders",
-          value: "0",
+          value: pendingCount.toString(),
           icon: ClipboardDocumentListIcon,
           color: "text-amber-500",
         },
         {
           label: "Revenue",
-          value: "৳0",
+          value: `৳${revenue}`,
           icon: CreditCardIcon,
           color: "text-green-500",
         },

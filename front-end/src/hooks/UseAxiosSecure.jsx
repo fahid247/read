@@ -6,17 +6,20 @@ import { useRouter } from "next/navigation";
 import UseAuth from "./UseAuth";
 
 const axiosSecureInstance = axios.create({
-  //   baseURL: "https://back-end-xi-lake.vercel.app/",
+  // baseURL: "https://back-end-xi-lake.vercel.app/",
   baseURL: "http://localhost:5000/",
 });
 
 const UseAxiosSecure = () => {
-  const { user, logOut } = UseAuth();
+  const { user, logOut, loading } = UseAuth();
   const router = useRouter();
 
   const axiosInstance = useMemo(() => axiosSecureInstance, []);
 
   useEffect(() => {
+    // 🚀 Wait until auth finishes loading
+    if (loading) return;
+
     const requestInterceptor = axiosInstance.interceptors.request.use(
       (config) => {
         if (user?.accessToken) {
@@ -24,7 +27,7 @@ const UseAxiosSecure = () => {
         }
         return config;
       },
-      (error) => Promise.reject(error),
+      (error) => Promise.reject(error)
     );
 
     const responseInterceptor = axiosInstance.interceptors.response.use(
@@ -32,8 +35,7 @@ const UseAxiosSecure = () => {
       async (error) => {
         const status = error?.response?.status;
 
-        // 🚀 Only redirect if user already exists
-        if ((status === 401 || status === 403) && user) {
+        if (!loading && (status === 401 || status === 403) && user) {
           try {
             await logOut();
             router.replace("/login");
@@ -43,14 +45,14 @@ const UseAxiosSecure = () => {
         }
 
         return Promise.reject(error);
-      },
+      }
     );
 
     return () => {
       axiosInstance.interceptors.request.eject(requestInterceptor);
       axiosInstance.interceptors.response.eject(responseInterceptor);
     };
-  }, [user, logOut, router, axiosInstance]);
+  }, [user, logOut, router, axiosInstance, loading]);
 
   return axiosInstance;
 };

@@ -64,3 +64,19 @@ exports.updateOrderStatus = async(req,res)=>{
 
  res.send(result)
 }
+
+exports.getOrdersStatusByEmail = async (req, res) => {
+  try {
+    const email = req.params.email;
+
+    const result = await orders
+      .find({ librarianEmail: email })   
+      .sort({ createdAt: -1 })
+      .toArray();
+
+    res.send(result);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).send({ message: "Failed to fetch orders" });
+  }
+};

@@ -16,7 +16,7 @@ import { MdOutlineSpaceDashboard } from "react-icons/md";
 import useRole from "@/Hooks/UseRole";
 import useAuth from "@/hooks/UseAuth";
 import ReadMartLogo from "@/components/Logo/ReadMartLogo";
-import { ClipboardDocumentListIcon } from "@heroicons/react/24/outline";
+import { LuClipboardList } from "react-icons/lu";
 
 const DashboardClient = ({ children }) => {
   const { role, roleLoading } = useRole();
@@ -59,13 +59,10 @@ const DashboardClient = ({ children }) => {
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
 
-      {/* Drawer Content */}
       <div className="drawer-content">
-        {/* Navbar */}
         <nav className="navbar w-full bg-base-100/80 backdrop-blur-xl border-b border-base-300 sticky top-0 z-30">
           <div className="flex items-center justify-between w-full px-4">
             <div className="flex items-center gap-3">
-              {/* Drawer toggle button - PRESERVED EXACTLY */}
               <label 
                 htmlFor="my-drawer-4" 
                 aria-label="open sidebar" 
@@ -78,7 +75,6 @@ const DashboardClient = ({ children }) => {
                 </svg>
               </label>
 
-              {/* Navbar Title - PRESERVED with styling */}
               <div className="px-4">
                 <h1 className="text-2xl md:text-2xl font-bold playfair text-primary">
                   {role ? `${role.charAt(0).toUpperCase() + role.slice(1)} Dashboard` : 'Dashboard'}
@@ -86,9 +82,7 @@ const DashboardClient = ({ children }) => {
               </div>
             </div>
 
-            {/* Right section - modern additions */}
             <div className="flex items-center gap-2">
-              {/* Theme toggle */}
               <button
                 onClick={() => setTheme(theme === "readmart" ? "readmart-dark" : "readmart")}
                 className="btn btn-ghost btn-circle btn-sm"
@@ -104,22 +98,18 @@ const DashboardClient = ({ children }) => {
           </div>
         </nav>
 
-        {/* Decorative line */}
         <div className="h-0.5 w-full bg-linear-to-r from-primary via-green-600 to-primary"></div>
 
-        {/* Page content */}
         <div className="p-4 md:p-6">
           {children}
         </div>
       </div>
 
-      {/* Sidebar */}
       <div className="drawer-side is-drawer-close:overflow-visible">
         <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
         
         <div className="flex min-h-full flex-col items-start bg-base-200/95 backdrop-blur-xl border-r border-base-300 is-drawer-close:w-14 is-drawer-open:w-64 transition-all duration-300">
           
-          {/* Sidebar header - visible when open */}
           <div className="w-full p-4 border-b border-base-300 is-drawer-close:hidden">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8  rounded-lg flex items-center justify-center">
@@ -132,7 +122,6 @@ const DashboardClient = ({ children }) => {
             </div>
           </div>
 
-          {/* Sidebar header - visible when closed */}
           <div className="w-full p-4 border-b border-base-300 is-drawer-open:hidden">
             <div className="flex justify-center">
               <div className="w-8 h-8  rounded-lg flex items-center justify-center">
@@ -141,9 +130,7 @@ const DashboardClient = ({ children }) => {
             </div>
           </div>
 
-          {/* Navigation Menu */}
           <ul className="menu w-full grow px-2 py-4 space-y-1">
-            {/* Home */}
             <li>
               <Link
                 href="/"
@@ -179,7 +166,6 @@ const DashboardClient = ({ children }) => {
               </Link>
             </li>
 
-            {/* Profile */}
             <li>
               <Link
                 href="/dashboard/my-profile"
@@ -198,7 +184,6 @@ const DashboardClient = ({ children }) => {
               </Link>
             </li>
 
-            {/* USER MENU */}
             {role === "user" && (
               <>
                 <li className="pt-2 is-drawer-close:hidden">
@@ -263,7 +248,6 @@ const DashboardClient = ({ children }) => {
               </>
             )}
 
-            {/* ADMIN MENU */}
             {role === "admin" && (
               <>
                 <li className="pt-2 is-drawer-close:hidden">
@@ -292,7 +276,6 @@ const DashboardClient = ({ children }) => {
               </>
             )}
 
-            {/* LIBRARIAN MENU */}
             {role === "librarian" && (
               <>
                 <li className="pt-2 is-drawer-close:hidden">
@@ -344,10 +327,10 @@ const DashboardClient = ({ children }) => {
                         ? "bg-linear-to-r from-primary/20 to-primary/5 text-primary font-medium" 
                         : "hover:bg-base-300/50 text-base-content/70 hover:text-base-content"
                     }`}
-                    data-tip="librarian-orders"
+                    data-tip="Orders management"
                   >
-                    <ClipboardDocumentListIcon  className={`text-lg ${isActive("/dashboard/librarian/librarian-orders") ? "text-primary" : ""}`} />
-                    <span className="is-drawer-close:hidden inter text-sm">Librarian Orders</span>
+                    <LuClipboardList  className={`text-lg ${isActive("/dashboard/librarian/librarian-orders") ? "text-primary" : ""}`} />
+                    <span className="is-drawer-close:hidden inter text-sm">Orders management</span>
                     {isActive("/dashboard/librarian/librarian-orders") && (
                       <span className="ml-auto w-1.5 h-1.5 bg-primary rounded-full is-drawer-close:hidden"></span>
                     )}
@@ -357,7 +340,7 @@ const DashboardClient = ({ children }) => {
             )}
           </ul>
 
-          {/* Sidebar footer */}
+
           <div className="w-full p-4 border-t border-base-300">
             <div className={`flex items-center gap-3 ${!isActive && 'justify-center'}`}>
               <div className="avatar placeholder">
